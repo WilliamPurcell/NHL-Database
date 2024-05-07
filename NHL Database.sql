@@ -134,7 +134,36 @@ WHEN MATCHED THEN
   UPDATE SET p.Situation = ts.Situationdescription;
   
   
-  
+
+
+
+
+--------Key for Divison---------------
+ALTER TABLE Division
+ADD CONSTRAINT NHLdivisions PRIMARY KEY (NHLdivisions);
+
+
+--------------------Key for teams--------------------------
+-- Create a sequence for generating unique IDs
+CREATE SEQUENCE team_id_seq
+START WITH 1
+INCREMENT BY 1
+NOCACHE;
+
+-- Alter the Teams table to add the TeamID column
+ALTER TABLE Teams
+ADD (TeamID INT);
+
+-- Use the sequence to populate TeamID with unique values
+UPDATE Teams
+SET TeamID = team_id_seq.NEXTVAL;
+
+-- Set TeamID as the primary key
+ALTER TABLE Teams
+ADD CONSTRAINT pk_Teams_TeamID PRIMARY KEY (TeamID);
+
+
+
   -------------Test Quires-------------------------------------------------- 
 SELECT Pname, Goals, situation
 FROM Player
@@ -182,34 +211,6 @@ GROUP BY Team
 ORDER BY FaceOffWinPercentage DESC
 
 
-
-
-
-
-
---------Key for Divison---------------
-ALTER TABLE Division
-ADD CONSTRAINT NHLdivisions PRIMARY KEY (NHLdivisions);
-
-
---------------------Key for teams--------------------------
--- Create a sequence for generating unique IDs
-CREATE SEQUENCE team_id_seq
-START WITH 1
-INCREMENT BY 1
-NOCACHE;
-
--- Alter the Teams table to add the TeamID column
-ALTER TABLE Teams
-ADD (TeamID INT);
-
--- Use the sequence to populate TeamID with unique values
-UPDATE Teams
-SET TeamID = team_id_seq.NEXTVAL;
-
--- Set TeamID as the primary key
-ALTER TABLE Teams
-ADD CONSTRAINT pk_Teams_TeamID PRIMARY KEY (TeamID);
 
 
 
